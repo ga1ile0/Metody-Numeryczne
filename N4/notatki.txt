@@ -70,15 +70,52 @@ int main(){
     for(int i = 0; i < N-3; i++){
         d[i] = coeff*(fun(i) - 2*fun(i+1) + fun(i+2));
     }
- 
-    thomas_algorithm(a,b,c,d,y);
 
-    thomas_algorithm(a,b,c,u,q);
+    double c_prime1[N];
+    double d_prime1[N];
+    double c_prime2[N];
+    double d_prime2[N];    
     
+
+    for(int i = 0; i < N; i++){
+        c_prime1[i] = 0.0;
+        d_prime1[i] = 0.0;
+        c_prime2[i] = 0.0;
+        d_prime2[i] = 0.0;
+    }
+
+    c_prime1[0] = c[0] / b[0];
+    d_prime1[0] = d[0] / b[0];
+    c_prime2[0] = c[0] / b[0];
+    d_prime2[0] = d[0] / b[0];
+
+
+    //Thomas algorithm for By=d
+
+    for(int i = 0; i < N; i++){
+        double m = 1.0 / (b[i] - (a[i] * c_prime1[i-1]));
+        c_prime1[i] = c[i] * m;
+        d_prime1[i] = (d[i] - (a[i] * d_prime1[i-1])) * m;
+    }
+    y[N] = d_prime1[N];
+    for(int i = N - 1; i > 0; i--){
+        y[i] = d_prime1[i] - (c_prime1[i] * y[i+1]);
+    }
+
+    //Thomas algorithm for Bq=u
+    for(int i = 0; i < N; i++){
+        double m = 1.0 / (b[i] - (a[i] * c_prime2[i-1]));
+        c_prime2[i] = c[i] * m;
+        d_prime2[i] = (d[i] - (a[i] * d_prime2[i-1])) * m;
+    }
+    q[N] = d_prime2[N];
+    for(int i = N - 1; i > 0; i--){
+        q[i] = d_prime2[i] - (c_prime2[i] * q[i+1]);
+    }
     double vTq = 0.0;
     double vTy = 0.0;
 
-    //liczymy v^Ty
+    //liczymy v^ty
     for(int i = 0; i < N; i++){
         vTy += v[i]*y[i];
     }
@@ -87,7 +124,6 @@ int main(){
         vTq += v[i]*q[i];
     }
 
-    //szukany wektor
     for(int i = 0; i < N; i++){
         f[i] = y[i] - ((q[i]*vTy) / (1 + vTq));
     }

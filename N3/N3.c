@@ -4,6 +4,29 @@
 int N = 1000;
 double h = 0.002;
 
+void thomas_algorithm(double a[], double b[], double c[], double d[], double f[]){
+    double c_prime[N];
+    double d_prime[N];
+
+    for(int i = 0; i < N; i++){
+        c_prime[i] = 0.0;
+        d_prime[i] = 0.0;
+    }
+
+    c_prime[0] = c[0] / b[0];
+    d_prime[0] = d[0] / b[0];
+
+    for(int i = 0; i < N; i++){
+        double m = 1.0 / (b[i] - (a[i] * c_prime[i-1]));
+        c_prime[i] = c[i] * m;
+        d_prime[i] = (d[i] - (a[i] * d_prime[i-1])) * m;
+    }
+    f[N] = d_prime[N];
+    for(int i = N - 1; i > 0; i--){
+        f[i] = d_prime[i] - (c_prime[i] * f[i+1]);
+    }
+}
+
 double fun(int k){
     double x = -1.0 + k*h;
     return 1.0 / (1.0 + 25.0*x*x);
@@ -26,31 +49,12 @@ int main(){
     }
 
     double coeff = 3*N*N; // 6/h^2
-    for(int i = 0; i < N-3; i++){
+    for(int i = 0; i < N-3; i++){ //wypełniam wektor d
         d[i] = coeff*(fun(i) - 2*fun(i+1) + fun(i+2));
     }
 
-
-    double c_prime[N];
-    double d_prime[N];
-
-    for(int i = 0; i < N; i++){
-        c_prime[i] = 0.0;
-        d_prime[i] = 0.0;
-    }
-
-    c_prime[0] = c[0] / b[0];
-    d_prime[0] = d[0] / b[0];
-
-    for(int i = 0; i < N; i++){
-        double m = 1.0 / (b[i] - (a[i] * c_prime[i-1]));
-        c_prime[i] = c[i] * m;
-        d_prime[i] = (d[i] - (a[i] * d_prime[i-1])) * m;
-    }
-    f[N] = d_prime[N];
-    for(int i = N - 1; i > 0; i--){
-        f[i] = d_prime[i] - (c_prime[i] * f[i+1]);
-    }
+    thomas_algorithm(a, b, c, d, f);
+    
 
     FILE *fptr;
     fptr = fopen("data.txt", "w");
