@@ -44,8 +44,6 @@ int main(){
         a[i] = 1.0;
         b[i] = 4.0;
         c[i] = 1.0;
-        d[i] = 0.0;
-        f[i] = 0.0;
     }
 
     double coeff = 3*N*N; // 6/h^2
@@ -55,7 +53,6 @@ int main(){
 
     thomas_algorithm(a, b, c, d, f);
     
-
     FILE *fptr;
     fptr = fopen("data.txt", "w");
     if(fptr == NULL){
