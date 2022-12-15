@@ -86,7 +86,7 @@ int main(){
         f[i] = y[i] - ((q[i]*vTy) / (1 + vTq));
     }
     
-
+    /* zakomentowałem zapisanie wyników do pliku
     FILE *fptr;
     fptr = fopen("data2.txt", "w");
     if(fptr == NULL){
@@ -102,7 +102,7 @@ int main(){
         fprintf(fptr, "%f\n", f[i]);
 
 
-    }
+    }*/
 
 
 }

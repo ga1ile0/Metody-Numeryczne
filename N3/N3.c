@@ -52,7 +52,7 @@ int main(){
     }
 
     thomas_algorithm(a, b, c, d, f);
-    
+    /* zakomentowałem zapisanie wyników do pliku 
     FILE *fptr;
     fptr = fopen("data.txt", "w");
     if(fptr == NULL){
@@ -68,7 +68,7 @@ int main(){
         fprintf(fptr, "%f\n", f[i]);
 
 
-    }
+    }*/
 
 
 }
